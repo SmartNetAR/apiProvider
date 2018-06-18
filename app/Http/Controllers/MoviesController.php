@@ -14,7 +14,8 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        //
+        $movies = movie::all();
+        return response()->json($movies);
     }
 
     /**
@@ -46,9 +47,27 @@ class MoviesController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        //$movie = movie::find($movie->id);
+        //if ( is_null( $movie ) )  {
+        //    return ("Buscar en api");
+            
+        //}else {
+            return response()->json($movie);
+        //}
+        
     }
 
+    public function findByTitle($title)
+    {
+        $movie = movie::where('title', '=', $title )->firstOrFail() ;
+        return response()->json($movie);
+    }
+
+    public function showByTittle($title)
+    {
+        $movie = movie::find($movie->title);
+        return response()->json($movie);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -81,5 +100,17 @@ class MoviesController extends Controller
     public function destroy(Movie $movie)
     {
         //
+    }
+
+    public function newMovie() {
+        $movie = new movie;
+        $movie->title = "Batman";
+        $movie->anyo = 2000;
+        $movie->runtime = '120 min';
+        $movie->genre = 'action';
+        $movie->urlImage = 'www.batman.com';
+        $movie->lastDateUpdate = date("Y-m-d H:i:s");
+        $movie->save();
+
     }
 }

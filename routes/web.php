@@ -10,10 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('movies', 'MoviesController');
 
-Route::resource('movie', 'MoviesController');
+Route::get('/now', function() {
+    return (date("Y-m-d H:i:s"));
+});
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/new', 'MoviesController@newMovie');
