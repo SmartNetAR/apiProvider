@@ -22,3 +22,5 @@ Route::resource('movies', 'MoviesController');
 Route::resource('movie', 'MoviesController');
 
 Route::get('movie/t/{title}', 'MoviesController@findByTitle');
+
+Route::get('searchapi/{title}', 'MoviesController@searchApi' );

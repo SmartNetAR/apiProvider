@@ -4,9 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Movie;
 use Illuminate\Http\Request;
+use App\Repositories\SearchApiMovies;
 
 class MoviesController extends Controller
 {
+
+    protected $searchApi;
+
+    public function __construct(SearchApiMovies $searchApi) {
+
+        $this->searchApi = $searchApi;
+    }
+
+    public function searchApi($title) {
+        $searchResult = $this->searchApi->search($title);
+
+        return $searchResult;
+    }
+
     /**
      * Display a listing of the resource.
      *
