@@ -22,7 +22,7 @@ Class SearchApiMovies {
         // $search = 'Batman';
         
 
-        $response = $this->$client->request('GET', "/?apikey={$apikey}&s={$title}");
+        $response = $this->client->request('GET', "/?apikey={$apikey}&s={$title}");
 
         return json_decode ( $response->getBody()->getContents() ,true);
     }
