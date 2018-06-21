@@ -78,7 +78,7 @@ class MoviesController extends Controller
 
     public function findByTitle($title)
     {
-        if (! movie::where('title', '=', $title)->exists()) {
+        if (! movie::where('title', 'LIKE', '%' .$title .'%')->exists()) {
             $this->searchApi($title);
         }
         // $movie = movie::where('title', '=', $title )->firstOrFail() ;
