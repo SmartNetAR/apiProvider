@@ -78,7 +78,11 @@ class MoviesController extends Controller
 
     public function findByTitle($title)
     {
-        $movie = movie::where('title', '=', $title )->firstOrFail() ;
+        if (! movie::where('title', '=', $title)->exists()) {
+            $this->searchApi($title);
+        }
+        // $movie = movie::where('title', '=', $title )->firstOrFail() ;
+        $movie = movie::where('title', 'LIKE', '%' .$title .'%')->get();
         return response()->json($movie);
     }
 
@@ -122,12 +126,12 @@ class MoviesController extends Controller
     }
 
     public function newMovie() {
-        $movie = new movie;
-        $movie->title = "Batman";
-        $movie->anyo = 2000;
-        $movie->runtime = '120 min';
-        $movie->genre = 'action';
-        $movie->urlImage = 'www.batman.com';
+        $movie = new Movie() ;
+        $movie->title = 'Batman';
+        $movie->year = $val['Year'];
+        $movie->imdbID = $val['imdbID'];
+        $movie->type = $val['Type'];
+        $movie->urlPoster = $val['Poster'];
         $movie->lastDateUpdate = date("Y-m-d H:i:s");
         $movie->save();
 
