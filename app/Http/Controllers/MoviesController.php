@@ -5,21 +5,25 @@ namespace App\Http\Controllers;
 use App\Movie;
 use Illuminate\Http\Request;
 use App\Repositories\SearchApiMovies;
+use App\Repositories\SaveApiToDB;
 
 class MoviesController extends Controller
 {
 
     protected $searchApi;
+    protected $saveApi;
 
-    public function __construct(SearchApiMovies $searchApi) {
+    public function __construct(SearchApiMovies $searchApi, SaveApiToDB $saveApi) {
 
         $this->searchApi = $searchApi;
+        $this->saveApi = $saveApi;
     }
 
     public function searchApi($title) {
         $searchResult = $this->searchApi->search($title);
-
-        return $searchResult;
+        return $this->saveApi->save($searchResult);
+        
+        //return $searchResult;
     }
 
     /**
