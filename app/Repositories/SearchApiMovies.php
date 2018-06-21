@@ -5,7 +5,6 @@ namespace App\Repositories;
 use GuzzleHttp\Client;
 
 Class SearchApiMovies {
-
     protected $client;
 
     public function __construct() {
@@ -19,11 +18,12 @@ Class SearchApiMovies {
 
     public function search($title){
         $apikey = 'f4fea2a9';
-        // $search = 'Batman';
         
 
         $response = $this->client->request('GET', "/?apikey={$apikey}&s={$title}");
 
-        return json_decode ( $response->getBody()->getContents() ,true);
+        return json_decode  ( $response->getBody()->getContents() ,true);
     }
+
+
 }

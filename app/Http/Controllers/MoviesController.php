@@ -5,21 +5,25 @@ namespace App\Http\Controllers;
 use App\Movie;
 use Illuminate\Http\Request;
 use App\Repositories\SearchApiMovies;
+use App\Repositories\SaveApiToDB;
 
 class MoviesController extends Controller
 {
 
     protected $searchApi;
+    protected $saveApi;
 
-    public function __construct(SearchApiMovies $searchApi) {
+    public function __construct(SearchApiMovies $searchApi, SaveApiToDB $saveApi) {
 
         $this->searchApi = $searchApi;
+        $this->saveApi = $saveApi;
     }
 
     public function searchApi($title) {
         $searchResult = $this->searchApi->search($title);
-
-        return $searchResult;
+        return $this->saveApi->save($searchResult);
+        
+        //return $searchResult;
     }
 
     /**
@@ -74,7 +78,11 @@ class MoviesController extends Controller
 
     public function findByTitle($title)
     {
-        $movie = movie::where('title', '=', $title )->firstOrFail() ;
+        if (! movie::where('title', '=', $title)->exists()) {
+            $this->searchApi($title);
+        }
+        // $movie = movie::where('title', '=', $title )->firstOrFail() ;
+        $movie = movie::where('title', 'LIKE', '%' .$title .'%')->get();
         return response()->json($movie);
     }
 
@@ -118,12 +126,12 @@ class MoviesController extends Controller
     }
 
     public function newMovie() {
-        $movie = new movie;
-        $movie->title = "Batman";
-        $movie->anyo = 2000;
-        $movie->runtime = '120 min';
-        $movie->genre = 'action';
-        $movie->urlImage = 'www.batman.com';
+        $movie = new Movie() ;
+        $movie->title = 'Batman';
+        $movie->year = $val['Year'];
+        $movie->imdbID = $val['imdbID'];
+        $movie->type = $val['Type'];
+        $movie->urlPoster = $val['Poster'];
         $movie->lastDateUpdate = date("Y-m-d H:i:s");
         $movie->save();
 
